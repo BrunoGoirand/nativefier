@@ -1,12 +1,12 @@
 {
   "name": "nativefier",
-  "version": "53.0.4",
+  "version": "53.0.5",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "nativefier",
-      "version": "53.0.4",
+      "version": "53.0.5",
       "license": "MIT",
       "dependencies": {
         "@electron/asar": "^3.2.4",
@@ -15,7 +15,6 @@
         "electron-packager": "^17.1.1",
         "file-type": "^16.5.4",
         "fs-extra": "^11.1.1",
-        "gitcloud": "^0.2.4",
         "loglevel": "^1.8.1",
         "sanitize-filename": "^1.6.3",
         "tmp": "^0.2.1",
@@ -4399,28 +4398,6 @@
       },
       "funding": {
         "url": "https://github.com/sponsors/sindresorhus"
-      }
-    },
-    "node_modules/gitcloud": {
-      "version": "0.2.4",
-      "resolved": "https://registry.npmjs.org/gitcloud/-/gitcloud-0.2.4.tgz",
-      "integrity": "sha512-xtO+GTv6c/XqnGqajRpv1aoTk3wFQPdQKjHP8cRZFxsCIQvYCTvgwqFGNv0+ux9HVREW10H5EIHN1Kw0r3PKMQ==",
-      "dependencies": {
-        "axios": "^0.27.2",
-        "cheerio": "^1.0.0-rc.12"
-      },
-      "engines": {
-        "node": ">= 12.0.0",
-        "npm": ">= 6.0.0"
-      }
-    },
-    "node_modules/gitcloud/node_modules/axios": {
-      "version": "0.27.2",
-      "resolved": "https://registry.npmjs.org/axios/-/axios-0.27.2.tgz",
-      "integrity": "sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==",
-      "dependencies": {
-        "follow-redirects": "^1.14.9",
-        "form-data": "^4.0.0"
       }
     },
     "node_modules/glob": {

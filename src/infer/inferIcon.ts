@@ -2,7 +2,8 @@ import * as path from 'path';
 import { writeFile } from 'fs';
 import { promisify } from 'util';
 
-import gitCloud = require('gitcloud');
+import axios from 'axios';
+import * as cheerio from 'cheerio';
 
 import {
   downloadFile,
@@ -24,6 +25,29 @@ type GitCloudIcon = {
   score?: number;
   url?: string;
 };
+
+type CloudIcon = {
+  name: string;
+  url: string;
+};
+
+async function fetchIconIndex(pageUrl: string): Promise<CloudIcon[]> {
+  const response = await axios.get<string>(pageUrl, { responseType: 'text' });
+  const $ = cheerio.load(response.data);
+  const icons: CloudIcon[] = [];
+
+  $('#file-index a').each((_index, element) => {
+    const link = $(element);
+    const name = link.text().trim();
+    const href = link.attr('href');
+
+    if (name && href) {
+      icons.push({ name, url: new URL(href, pageUrl).href });
+    }
+  });
+
+  return icons;
+}
 
 function getMaxMatchScore(iconWithScores: GitCloudIcon[]): number {
   const score = iconWithScores.reduce((maxScore, currentIcon) => {
@@ -74,8 +98,8 @@ async function inferIconFromStore(
     getAllowedIconFormats(platform),
   );
 
-  const cloudIcons = await gitCloud(GITCLOUD_URL);
-  log.debug(`Got ${cloudIcons.length} icons from gitcloud`);
+  const cloudIcons = await fetchIconIndex(GITCLOUD_URL);
+  log.debug(`Got ${cloudIcons.length} icons from icon store`);
   const iconWithScores = mapIconWithMatchScore(cloudIcons, targetUrl);
   const maxScore = getMaxMatchScore(iconWithScores);
 
