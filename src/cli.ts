@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import 'source-map-support/register';
+process.setSourceMapsEnabled(true);
 
 import electronPackager = require('electron-packager');
 import * as log from 'loglevel';

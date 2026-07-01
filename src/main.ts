@@ -1,4 +1,4 @@
-import 'source-map-support/register';
+process.setSourceMapsEnabled(true);
 
 import { buildNativefierApp } from './build/buildNativefierApp';
 import { RawOptions } from '../shared/src/options/model';

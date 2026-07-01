@@ -1,4 +1,4 @@
-import 'source-map-support/register';
+process.setSourceMapsEnabled(true);
 
 import { initArgs, parseArgs } from './cli';
 import { parseJson } from './utils/parseUtils';

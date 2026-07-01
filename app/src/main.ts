@@ -1,4 +1,6 @@
-import 'source-map-support/register';
+(
+  process as NodeJS.Process & { setSourceMapsEnabled(value: boolean): void }
+).setSourceMapsEnabled(true);
 
 import fs from 'fs';
 import * as path from 'path';
