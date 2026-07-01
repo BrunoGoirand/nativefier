@@ -1,6 +1,6 @@
 {
   "name": "nativefier",
-  "version": "53.0.1",
+  "version": "53.0.2",
   "description": "Wrap web apps natively",
   "license": "MIT",
   "author": "Goh Jia Hao",
@@ -32,7 +32,7 @@
   },
   "scripts": {
     "build-app": "cd app && webpack",
-    "build-app-static": "ncp app/src/static/ app/lib/static/ && ncp app/dist/preload.js app/lib/preload.js && ncp app/dist/preload.js.map app/lib/preload.js.map",
+    "build-app-static": "node dev/copy-app-static.js",
     "build": "npm run clean && tsc --build shared src app && npm run build-app && npm run build-app-static",
     "build:watch": "npm run clean && tsc --build shared src app --watch",
     "bump:major": "node dev/bump-version.js major",
@@ -68,7 +68,6 @@
     "gitcloud": "^0.2.4",
     "hasbin": "^1.2.3",
     "loglevel": "^1.8.1",
-    "ncp": "^2.0.0",
     "page-icon": "^0.4.0",
     "sanitize-filename": "^1.6.3",
     "source-map-support": "^0.5.21",
@@ -80,7 +79,6 @@
     "@types/fs-extra": "^11.0.1",
     "@types/hasbin": "^1.2.0",
     "@types/jest": "^29.5.4",
-    "@types/ncp": "^2.0.5",
     "@types/node": "^20.5.6",
     "@types/page-icon": "^0.3.4",
     "@types/tmp": "^0.2.3",
