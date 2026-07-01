@@ -3,7 +3,6 @@ import { writeFile } from 'fs';
 import { promisify } from 'util';
 
 import gitCloud = require('gitcloud');
-import pageIcon from 'page-icon';
 
 import {
   downloadFile,
@@ -12,6 +11,7 @@ import {
   getTempDir,
 } from '../helpers/helpers';
 import * as log from 'loglevel';
+import { pageIcon } from './pageIcon';
 
 const writeFileAsync = promisify(writeFile);
 
