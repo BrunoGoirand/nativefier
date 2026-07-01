@@ -5,9 +5,9 @@ import * as path from 'path';
 
 import axios from 'axios';
 import * as dns from 'dns';
-import * as hasbin from 'hasbin';
 import * as log from 'loglevel';
 import * as tmp from 'tmp';
+import which from 'which';
 
 import { parseJson } from '../utils/parseUtils';
 
@@ -23,8 +23,12 @@ export type DownloadResult = {
 
 type ProcessEnvs = Record<string, unknown>;
 
+function hasCommand(command: string): boolean {
+  return which.sync(command, { nothrow: true }) !== null;
+}
+
 export function hasWine(): boolean {
-  return hasbin.sync('wine');
+  return hasCommand('wine');
 }
 
 // I tried to place this (and the other is* functions) in
@@ -88,9 +92,9 @@ export function downloadFile(
 }
 
 export function getAllowedIconFormats(platform: string): string[] {
-  const hasIdentify = hasbin.sync('identify') || hasbin.sync('gm');
-  const hasConvert = hasbin.sync('convert') || hasbin.sync('gm');
-  const hasIconUtil = hasbin.sync('iconutil');
+  const hasIdentify = hasCommand('identify') || hasCommand('gm');
+  const hasConvert = hasCommand('convert') || hasCommand('gm');
+  const hasIconUtil = hasCommand('iconutil');
 
   const pngToIcns = hasConvert && hasIconUtil;
   const pngToIco = hasConvert;
