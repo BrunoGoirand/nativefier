@@ -44,6 +44,7 @@ export async function getOptions(rawOptions: RawOptions): Promise<AppOptions> {
       darwinDarkModeSupport: rawOptions.darwinDarkModeSupport ?? false,
       dir: PLACEHOLDER_APP_DIR,
       electronVersion: rawOptions.electronVersion ?? DEFAULT_ELECTRON_VERSION,
+      electronZipDir: rawOptions.electronZipDir,
       icon: rawOptions.icon,
       name: typeof rawOptions.name === 'string' ? rawOptions.name : '',
       out: rawOptions.out ?? process.cwd(),
