@@ -9,6 +9,43 @@ npm run bump:patch
 npm run build
 ```
 
+## Integration tests
+
+The integration suite packages Linux apps without network access during the
+test itself. Before running it on a fresh machine, pre-fill Electron's cache:
+
+```sh
+npm run prepare:electron-cache:linux
+```
+
+This command downloads only the missing Linux Electron ZIPs required by
+`src/integration-test.ts`:
+
+```text
+electron-v43.0.0-linux-x64.zip
+electron-v43.0.0-linux-arm64.zip
+electron-v11.2.3-linux-arm64.zip
+```
+
+By default, the files are stored under Electron's usual cache root:
+
+```text
+macOS: ~/Library/Caches/electron/nativefier-integration/
+Linux: ~/.cache/electron/nativefier-integration/
+```
+
+To use a different root, set `ELECTRON_CACHE_ROOT`:
+
+```sh
+ELECTRON_CACHE_ROOT=/path/to/electron-cache npm run prepare:electron-cache:linux
+```
+
+Then run:
+
+```sh
+npm run test:integration
+```
+
 ## Pack
 
 ```sh
