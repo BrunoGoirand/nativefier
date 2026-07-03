@@ -26,3 +26,9 @@ open ./TorrentQuest-darwin-x64/TorrentQuest.app
 ```
 
 ---
+
+jest
+@types/jest
+playwright
+
+---

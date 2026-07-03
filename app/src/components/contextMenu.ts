@@ -3,7 +3,7 @@ import {
   ContextMenuParams,
   Event as ElectronEvent,
 } from 'electron';
-import contextMenu from 'electron-context-menu';
+import contextMenu, { Actions } from 'electron-context-menu';
 
 import { nativeTabsSupported, openExternal } from '../helpers/helpers';
 import * as log from '../helpers/loggingHelper';
@@ -22,7 +22,7 @@ export function initContextMenu(
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   contextMenu({
-    prepend: (actions: contextMenu.Actions, params: ContextMenuParams) => {
+    prepend: (actions: Actions, params: ContextMenuParams) => {
       log.debug('contextMenu.prepend', { actions, params });
       const items = [];
       if (params.linkURL && window) {

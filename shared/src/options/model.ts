@@ -1,4 +1,3 @@
-import { CreateOptions } from '@electron/asar';
 import { randomUUID } from 'crypto';
 import * as electronPackager from 'electron-packager';
 
@@ -131,7 +130,7 @@ export type RawOptions = {
   appCopyright?: string;
   appVersion?: string;
   arch?: string;
-  asar?: boolean | CreateOptions;
+  asar?: electronPackager.Options['asar'];
   backgroundColor?: string;
   basicAuthPassword?: string;
   basicAuthUsername?: string;
