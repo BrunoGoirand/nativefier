@@ -1,5 +1,161 @@
 process.setSourceMapsEnabled(true);
 
+type ParserOptions = {
+  alias: Record<string, string[]>;
+  array: string[];
+  boolean: string[];
+  default: Record<string, unknown>;
+  number: string[];
+  string: string[];
+};
+
+type OptionDefinition = {
+  alias?: string | string[];
+  choices?: readonly string[];
+  coerce?: (value: string) => unknown;
+  default?: unknown;
+  type?: 'array' | 'boolean' | 'number' | 'string';
+  string?: boolean;
+};
+
+type MockYargsParser = (
+  argv: string[],
+  options: Partial<ParserOptions>,
+) => Record<string, unknown> & { _: unknown[] };
+
+jest.mock('yargs', () => {
+  const yargsParser = jest.requireActual<MockYargsParser>('yargs-parser');
+
+  class MockYargs {
+    private readonly argvInput: string[];
+
+    private readonly options = new Map<string, OptionDefinition>();
+
+    private parsed?: Record<string, unknown> & { _: unknown[] };
+
+    public constructor(argv: string[]) {
+      this.argvInput = argv;
+    }
+
+    public scriptName(): this {
+      return this;
+    }
+
+    public usage(): this {
+      return this;
+    }
+
+    public example(): this {
+      return this;
+    }
+
+    public positional(): this {
+      return this;
+    }
+
+    public option(name: string, definition: OptionDefinition): this {
+      this.options.set(name, definition);
+      return this;
+    }
+
+    public group(): this {
+      return this;
+    }
+
+    public version(): this {
+      this.options.set('version', { type: 'boolean' });
+      return this;
+    }
+
+    public help(): this {
+      this.options.set('help', { type: 'boolean' });
+      return this;
+    }
+
+    public wrap(): this {
+      return this;
+    }
+
+    public showHelp(): void {
+      // eslint-disable-next-line no-console
+      console.log('nativefier help');
+    }
+
+    public get argv(): Record<string, unknown> & { _: unknown[] } {
+      if (!this.parsed) {
+        this.parsed = this.parse();
+      }
+      return this.parsed;
+    }
+
+    private parse(): Record<string, unknown> & { _: unknown[] } {
+      const parserOptions: ParserOptions = {
+        alias: {},
+        array: [],
+        boolean: [],
+        default: {},
+        number: [],
+        string: [],
+      };
+
+      for (const [name, definition] of this.options.entries()) {
+        const aliases = definition.alias
+          ? [definition.alias].flat()
+          : undefined;
+        if (aliases) {
+          parserOptions.alias[name] = aliases;
+        }
+
+        if (definition.default !== undefined) {
+          parserOptions.default[name] = definition.default;
+        }
+
+        if (definition.type === 'array') {
+          parserOptions.array.push(name);
+        } else if (definition.type === 'boolean') {
+          parserOptions.boolean.push(name);
+        } else if (definition.type === 'number') {
+          parserOptions.number.push(name);
+        } else if (definition.type === 'string' || definition.string) {
+          parserOptions.string.push(name);
+        }
+      }
+
+      const parsed = yargsParser(this.argvInput, parserOptions);
+
+      if (parsed.help || parsed.version) {
+        // eslint-disable-next-line no-console
+        console.log('nativefier help');
+        process.exit(0);
+      }
+
+      for (const [name, definition] of this.options.entries()) {
+        const value = parsed[name];
+        if (
+          definition.choices &&
+          value !== undefined &&
+          !definition.choices.includes(value as string)
+        ) {
+          // eslint-disable-next-line no-console
+          console.error(`Invalid value for ${name}: ${value as string}`);
+          process.exit(1);
+        }
+
+        if (definition.coerce && typeof value === 'string') {
+          parsed[name] = definition.coerce(value);
+        }
+      }
+
+      return parsed;
+    }
+  }
+
+  return {
+    __esModule: true,
+    default: (argv: string[]): MockYargs => new MockYargs(argv),
+  };
+});
+
 import { initArgs, parseArgs } from './cli';
 import { parseJson } from './utils/parseUtils';
 
