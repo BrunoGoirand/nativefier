@@ -12,6 +12,7 @@ import {
 
 import { getCSSToInject, isOSX, nativeTabsSupported } from './helpers';
 import * as log from './loggingHelper';
+import { getWindowGroupId, markWindowGroup } from './windowGroups';
 import { TrayValue, WindowOptions } from '../../../shared/src/options/model';
 import { randomUUID } from 'crypto';
 
@@ -99,7 +100,7 @@ export function createNewTab(
     focusedWindow,
   });
   return withFocusedWindow((focusedWindow) => {
-    const newTab = createNewWindow(options, setupWindow, url);
+    const newTab = createNewWindow(options, setupWindow, url, focusedWindow);
     log.debug('createNewTab.withFocusedWindow', { focusedWindow, newTab });
     focusedWindow.addTabbedWindow(newTab);
     if (!foreground) {
@@ -123,6 +124,10 @@ export function createNewWindow(
     parent: nativeTabsSupported() ? undefined : parent,
     ...getDefaultWindowOptions(options),
   });
+  markWindowGroup(
+    window,
+    parent ? getWindowGroupId(parent) : options.windowGroupId,
+  );
   setupWindow(options, window);
   window.loadURL(url).catch((err) => log.error('window.loadURL ERROR', err));
   return window;

@@ -6,7 +6,17 @@ import { WindowOptions } from '../../../shared/src/options/model';
 jest.mock('./helpers');
 import { getCSSToInject } from './helpers';
 jest.mock('./windowEvents');
-import { clearAppData, createNewTab, injectCSS } from './windowHelpers';
+import {
+  clearAppData,
+  createNewTab,
+  createNewWindow,
+  injectCSS,
+} from './windowHelpers';
+import {
+  closeWindowGroup,
+  markWindowGroup,
+  resetWindowGroupsForTests,
+} from './windowGroups';
 
 describe('clearAppData', () => {
   let window: BrowserWindow;
@@ -102,6 +112,53 @@ describe('createNewTab', () => {
     expect(setupWindow).toHaveBeenCalledWith(options, tab);
     expect(mockLoadURL).toHaveBeenCalledWith(url);
     expect(mockFocus).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('createNewWindow', () => {
+  const options: WindowOptions = {
+    autoHideMenuBar: true,
+    blockExternalUrls: false,
+    insecure: false,
+    name: 'Test App',
+    targetUrl: 'https://github.com/nativefier/natifefier',
+    zoom: 1.0,
+  };
+  const setupWindow = jest.fn();
+  const url = 'https://github.com/nativefier/nativefier';
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+    resetWindowGroupsForTests();
+  });
+
+  test('does not inherit the focused window group without an explicit parent', () => {
+    const rootWindow = new BrowserWindow();
+    markWindowGroup(rootWindow, 'focused-group');
+    const closeRootWindow = jest.spyOn(rootWindow, 'close');
+    jest.spyOn(BrowserWindow, 'getFocusedWindow').mockReturnValue(rootWindow);
+
+    const childWindow = createNewWindow(options, setupWindow, url);
+    const closeChildWindow = jest.spyOn(childWindow, 'close');
+
+    closeWindowGroup(rootWindow);
+
+    expect(closeRootWindow).toHaveBeenCalledTimes(1);
+    expect(closeChildWindow).not.toHaveBeenCalled();
+  });
+
+  test('inherits the parent window group when an explicit parent is provided', () => {
+    const rootWindow = new BrowserWindow();
+    markWindowGroup(rootWindow, 'parent-group');
+    const closeRootWindow = jest.spyOn(rootWindow, 'close');
+
+    const childWindow = createNewWindow(options, setupWindow, url, rootWindow);
+    const closeChildWindow = jest.spyOn(childWindow, 'close');
+
+    closeWindowGroup(rootWindow);
+
+    expect(closeRootWindow).toHaveBeenCalledTimes(1);
+    expect(closeChildWindow).toHaveBeenCalledTimes(1);
   });
 });
 

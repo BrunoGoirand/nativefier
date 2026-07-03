@@ -4,6 +4,7 @@
 
 import fs from 'fs';
 import * as path from 'path';
+import { spawn } from 'child_process';
 
 import electron, {
   app,
@@ -59,6 +60,28 @@ const appArgs =
       ) as OutputOptions);
 
 log.debug('appArgs', appArgs);
+
+function launchAdditionalInstance(): void {
+  log.debug('launchAdditionalInstance', { execPath: process.execPath });
+  const child = spawn(process.execPath, [], {
+    detached: true,
+    stdio: 'ignore',
+  });
+  child.unref();
+}
+
+function focusMainWindow(): void {
+  if (mainWindow) {
+    if (!mainWindow.isVisible()) {
+      mainWindow.show();
+    }
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
+    mainWindow.focus();
+  }
+}
+
 // Do this relatively early so that we can start storing appData with the app
 if (appArgs.portable) {
   log.debug(
@@ -289,29 +312,22 @@ app.on('activate', (event: electron.Event, hasVisibleWindows: boolean) => {
     // this is called when the dock is clicked
     if (!hasVisibleWindows) {
       mainWindow.show();
+    } else if (!appArgs.singleInstance) {
+      launchAdditionalInstance();
     }
   }
 });
 
-// quit if singleInstance mode and there's already another instance running
-const shouldQuit = appArgs.singleInstance && !app.requestSingleInstanceLock();
-if (shouldQuit) {
-  app.quit();
-} else {
-  app.on('second-instance', () => {
-    log.debug('app.second-instance');
-    if (mainWindow) {
-      if (!mainWindow.isVisible()) {
-        // try
-        mainWindow.show();
-      }
-      if (mainWindow.isMinimized()) {
-        // minimized
-        mainWindow.restore();
-      }
-      mainWindow.focus();
-    }
-  });
+if (appArgs.singleInstance) {
+  const hasSingleInstanceLock = app.requestSingleInstanceLock();
+  if (!hasSingleInstanceLock) {
+    app.quit();
+  } else {
+    app.on('second-instance', () => {
+      log.debug('app.second-instance');
+      focusMainWindow();
+    });
+  }
 }
 
 app.on('new-window-for-tab', (event: Event) => {

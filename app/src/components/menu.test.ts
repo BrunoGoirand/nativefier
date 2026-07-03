@@ -1,7 +1,11 @@
-import { BrowserWindow, MenuItemConstructorOptions } from 'electron';
+import { app, BrowserWindow, MenuItemConstructorOptions } from 'electron';
 
 jest.mock('../helpers/helpers');
 import { isOSX } from '../helpers/helpers';
+import {
+  markWindowGroup,
+  resetWindowGroupsForTests,
+} from '../helpers/windowGroups';
 import { generateMenu } from './menu';
 
 describe('generateMenu', () => {
@@ -12,6 +16,8 @@ describe('generateMenu', () => {
   let mockIsSimpleFullScreen: jest.SpyInstance;
   let mockSetFullScreen: jest.SpyInstance;
   let mockSetSimpleFullScreen: jest.SpyInstance;
+  let mockDestroy: jest.SpyInstance;
+  let mockQuit: jest.SpyInstance;
 
   beforeEach(() => {
     window = new BrowserWindow();
@@ -27,14 +33,19 @@ describe('generateMenu', () => {
       .mockReturnValue(false);
     mockSetFullScreen = jest.spyOn(window, 'setFullScreen');
     mockSetSimpleFullScreen = jest.spyOn(window, 'setSimpleFullScreen');
+    mockDestroy = jest.spyOn(window, 'destroy');
+    mockQuit = jest.spyOn(app, 'quit');
   });
 
-  afterAll(() => {
+  afterEach(() => {
     mockIsFullScreen.mockRestore();
     mockIsFullScreenable.mockRestore();
     mockIsSimpleFullScreen.mockRestore();
     mockSetFullScreen.mockRestore();
     mockSetSimpleFullScreen.mockRestore();
+    mockDestroy.mockRestore();
+    mockQuit.mockRestore();
+    resetWindowGroupsForTests();
   });
 
   test('does not have fullscreen if not supported', () => {
@@ -164,4 +175,54 @@ describe('generateMenu', () => {
       expect(mockSetFullScreen).not.toHaveBeenCalled();
     },
   );
+
+  test('uses app quit for single-instance mac apps', () => {
+    mockIsOSX.mockReturnValue(true);
+
+    const menu = generateMenu(
+      {
+        nativefierVersion: '1.0.0',
+        zoom: 1.0,
+        disableDevTools: false,
+        singleInstance: true,
+      },
+      window,
+    );
+
+    const appMenu = menu[0].submenu as MenuItemConstructorOptions[];
+    const quit = appMenu.find((item) => item.label === 'Quit');
+
+    expect(quit?.role).toBe('quit');
+    expect(quit?.click).toBeUndefined();
+  });
+
+  test('force-closes the focused window group on non-single-instance mac apps', () => {
+    mockIsOSX.mockReturnValue(true);
+    const secondWindow = new BrowserWindow();
+    const mockDestroySecondWindow = jest.spyOn(secondWindow, 'destroy');
+    markWindowGroup(window, 'active-group');
+    markWindowGroup(secondWindow, 'active-group');
+
+    const menu = generateMenu(
+      {
+        nativefierVersion: '1.0.0',
+        zoom: 1.0,
+        disableDevTools: false,
+        singleInstance: false,
+      },
+      window,
+    );
+
+    const appMenu = menu[0].submenu as MenuItemConstructorOptions[];
+    const quit = appMenu.find((item) => item.label === 'Quit');
+
+    expect(quit?.role).toBeUndefined();
+
+    // @ts-expect-error click is here TypeScript...
+    quit?.click(null, window);
+
+    expect(mockDestroy).toHaveBeenCalledTimes(1);
+    expect(mockDestroySecondWindow).toHaveBeenCalledTimes(1);
+    expect(mockQuit).toHaveBeenCalledTimes(1);
+  });
 });

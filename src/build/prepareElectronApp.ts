@@ -173,6 +173,22 @@ function changeAppPackageJsonName(
   return normalizedAppName;
 }
 
+export function applyMacOSSingleInstancePreference(options: AppOptions): void {
+  if (
+    options.packager.platform !== 'darwin' &&
+    options.packager.platform !== 'mas'
+  ) {
+    return;
+  }
+
+  options.packager.extendInfo = {
+    ...(typeof options.packager.extendInfo === 'object'
+      ? options.packager.extendInfo
+      : {}),
+    LSMultipleInstancesProhibited: options.nativefier.singleInstance,
+  };
+}
+
 /**
  * Creates a temporary directory, copies the './app folder' inside,
  * and adds a text file with the app configuration.
@@ -216,4 +232,5 @@ export async function prepareElectronApp(
     options.packager.targetUrl,
   );
   options.packager.appBundleId = `com.electron.nativefier.${normalizedAppName}`;
+  applyMacOSSingleInstancePreference(options);
 }

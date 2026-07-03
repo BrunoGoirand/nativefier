@@ -21,6 +21,7 @@ import {
 import * as log from '../helpers/loggingHelper';
 import { IS_PLAYWRIGHT } from '../helpers/playwrightHelpers';
 import { onNewWindow, setupNativefierWindow } from '../helpers/windowEvents';
+import { markWindowGroup } from '../helpers/windowGroups';
 import {
   clearCache,
   createNewTab,
@@ -88,6 +89,8 @@ export async function createMainWindow(
       outputOptionsToWindowOptions(options, nativeTabsSupported()),
     ),
   });
+
+  markWindowGroup(mainWindow);
 
   // Just load about:blank to start, gives playwright something to latch onto initially for testing.
   if (IS_PLAYWRIGHT) {

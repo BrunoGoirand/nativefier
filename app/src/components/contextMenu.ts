@@ -42,7 +42,7 @@ export function initContextMenu(
               outputOptionsToWindowOptions(options, nativeTabsSupported()),
               setupNativefierWindow,
               params.linkURL,
-              // window,
+              window,
             ),
         });
         items.push({

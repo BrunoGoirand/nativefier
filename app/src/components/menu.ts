@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import path from 'path';
 
 import {
+  app,
   BaseWindow,
   BrowserWindow,
   clipboard,
@@ -12,6 +13,7 @@ import {
 
 import { cleanupPlainText, isOSX, openExternal } from '../helpers/helpers';
 import * as log from '../helpers/loggingHelper';
+import { closeWindowGroup } from '../helpers/windowGroups';
 import {
   clearAppData,
   getCurrentURL,
@@ -49,6 +51,19 @@ function focusedBrowserWindow(
   return focusedWindow instanceof BrowserWindow ? focusedWindow : mainWindow;
 }
 
+function closeFocusedWindowGroup(
+  focusedWindow: BaseWindow | undefined,
+  mainWindow: BrowserWindow,
+): void {
+  const remainingWindowGroups = closeWindowGroup(
+    focusedBrowserWindow(focusedWindow, mainWindow),
+    { force: true },
+  );
+  if (remainingWindowGroups === 0) {
+    app.quit();
+  }
+}
+
 export function createMenu(
   options: OutputOptions,
   mainWindow: BrowserWindow,
@@ -66,11 +81,12 @@ export function generateMenu(
   options: {
     disableDevTools: boolean;
     nativefierVersion: string;
+    singleInstance?: boolean;
     zoom?: number;
   },
   mainWindow: BrowserWindow,
 ): MenuItemConstructorOptions[] {
-  const { nativefierVersion, zoom, disableDevTools } = options;
+  const { nativefierVersion, singleInstance, zoom, disableDevTools } = options;
   const zoomResetLabel =
     !zoom || zoom === 1.0
       ? 'Reset Zoom'
@@ -349,7 +365,17 @@ export function generateMenu(
         {
           label: 'Quit',
           accelerator: 'Cmd+Q',
-          role: 'quit',
+          ...(singleInstance
+            ? { role: 'quit' as const }
+            : {
+                click: (
+                  item: MenuItem,
+                  focusedWindow: BaseWindow | undefined,
+                ): void => {
+                  log.debug('Quit.click', { item, focusedWindow, mainWindow });
+                  closeFocusedWindowGroup(focusedWindow, mainWindow);
+                },
+              }),
         },
       ],
     };

@@ -32,6 +32,14 @@ class MockBrowserWindow extends EventEmitter {
     return;
   }
 
+  close(): void {
+    return;
+  }
+
+  destroy(): void {
+    return;
+  }
+
   focus(): void {
     return;
   }
@@ -156,7 +164,14 @@ const mockClipboard = {
   },
 };
 
+const mockApp = {
+  quit(): void {
+    return;
+  },
+};
+
 export {
+  mockApp as app,
   MockDialog as dialog,
   MockBrowserWindow as BrowserWindow,
   MockSession as Session,

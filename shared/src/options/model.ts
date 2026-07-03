@@ -216,6 +216,7 @@ export type WindowOptions = {
   tabbingIdentifier?: string;
   targetUrl: string;
   userAgent?: string;
+  windowGroupId?: string;
   zoom: number;
 };
 
