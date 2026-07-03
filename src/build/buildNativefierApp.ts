@@ -136,6 +136,28 @@ function getOSRunHelp(platform?: string): string {
   return '';
 }
 
+function getExpectedAppPath(options: AppOptions): string | undefined {
+  const { arch, name, out, platform } = options.packager;
+  if (!name || !out || !platform || !arch) {
+    return undefined;
+  }
+  return path.join(out, `${name}-${platform}-${arch}`);
+}
+
+async function removeExistingAppOutput(options: AppOptions): Promise<void> {
+  if (!options.packager.overwrite) {
+    return;
+  }
+
+  const expectedAppPath = getExpectedAppPath(options);
+  if (!expectedAppPath || !(await fs.pathExists(expectedAppPath))) {
+    return;
+  }
+
+  log.debug('Removing existing app output before packaging', expectedAppPath);
+  await fs.remove(expectedAppPath);
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function buildNativefierApp(
   rawOptions: RawOptions,
@@ -207,6 +229,7 @@ export async function buildNativefierApp(
     "\nPackaging... This will take a few seconds, maybe minutes if the requested Electron isn't cached yet...",
   );
   trimUnprocessableOptions(options);
+  await removeExistingAppOutput(options);
   electronGet.initializeProxy(); // https://github.com/electron/get#proxies
   const appPathArray = await electronPackager(options.packager);
 

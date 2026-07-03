@@ -1,4 +1,9 @@
-import { BrowserWindow, ContextMenuParams } from 'electron';
+import {
+  BrowserWindow,
+  clipboard,
+  ContextMenuParams,
+  MenuItemConstructorOptions,
+} from 'electron';
 import contextMenu, { Actions } from 'electron-context-menu';
 
 import { nativeTabsSupported, openExternal } from '../helpers/helpers';
@@ -20,7 +25,7 @@ export function initContextMenu(
   contextMenu({
     prepend: (actions: Actions, params: ContextMenuParams) => {
       log.debug('contextMenu.prepend', { actions, params });
-      const items = [];
+      const items: MenuItemConstructorOptions[] = [];
       if (params.linkURL && window) {
         items.push({
           label: 'Open Link in Default Browser',
@@ -39,6 +44,10 @@ export function initContextMenu(
               params.linkURL,
               // window,
             ),
+        });
+        items.push({
+          label: 'Copy Link Address',
+          click: () => clipboard.writeText(params.linkURL),
         });
         if (nativeTabsSupported()) {
           items.push({
@@ -75,6 +84,7 @@ export function initContextMenu(
     },
     showCopyImage: true,
     showCopyImageAddress: true,
+    showCopyLink: false,
     showSaveImage: true,
   });
 }

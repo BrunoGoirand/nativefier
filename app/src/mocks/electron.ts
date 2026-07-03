@@ -150,11 +150,18 @@ const mockShell = {
   },
 };
 
+const mockClipboard = {
+  writeText(text: string, type?: string): void {
+    return;
+  },
+};
+
 export {
   MockDialog as dialog,
   MockBrowserWindow as BrowserWindow,
   MockSession as Session,
   MockWebContents as WebContents,
   MockWebRequest as WebRequest,
+  mockClipboard as clipboard,
   mockShell as shell,
 };
