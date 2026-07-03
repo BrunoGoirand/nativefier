@@ -6,6 +6,7 @@
     "incremental": true,
     "module": "commonjs",
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "noImplicitAny": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,

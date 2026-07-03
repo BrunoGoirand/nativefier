@@ -88,7 +88,7 @@ describe('Application launch', () => {
             isLinux() && process.env.DISPLAY
               ? JSON.stringify({ DISPLAY: process.env.DISPLAY })
               : undefined,
-        } as NativefierOptions),
+        }),
         USE_LOG_FILE: '1',
         VERBOSE: '1',
       },

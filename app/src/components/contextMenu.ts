@@ -1,8 +1,4 @@
-import {
-  BrowserWindow,
-  ContextMenuParams,
-  Event as ElectronEvent,
-} from 'electron';
+import { BrowserWindow, ContextMenuParams } from 'electron';
 import contextMenu, { Actions } from 'electron-context-menu';
 
 import { nativeTabsSupported, openExternal } from '../helpers/helpers';
@@ -71,7 +67,7 @@ export function initContextMenu(
               window.emit('new-window-for-tab', {
                 ...new Event('new-window-for-tab'),
                 url: params.linkURL,
-              } as ElectronEvent<{ url: string }>),
+              }),
           });
         }
       }

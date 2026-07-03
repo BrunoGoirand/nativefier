@@ -10,7 +10,15 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader', // https://webpack.js.org/guides/typescript/
+        use: {
+          loader: 'ts-loader', // https://webpack.js.org/guides/typescript/
+          options: {
+            compilerOptions: {
+              declaration: false,
+            },
+            projectReferences: true,
+          },
+        },
         exclude: /node_modules/,
       },
     ],
