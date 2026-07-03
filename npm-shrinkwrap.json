@@ -1,12 +1,12 @@
 {
   "name": "nativefier",
-  "version": "53.1.1",
+  "version": "53.1.2",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "nativefier",
-      "version": "53.1.1",
+      "version": "53.1.2",
       "license": "MIT",
       "dependencies": {
         "@electron/asar": "^4.2.0",
@@ -39,7 +39,7 @@
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-prettier": "^5.0.0",
         "jest": "^30.4.2",
-        "playwright": "^1.36.2",
+        "playwright": "^1.61.1",
         "prettier": "^3.0.1",
         "rimraf": "^6.1.3",
         "ts-loader": "^9.4.4",
