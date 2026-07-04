@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import * as fileType from 'file-type';
+
+import { detectFileTypeFromBuffer } from './fileType';
 
 type PageIcon = {
   data: Buffer;
@@ -92,7 +93,7 @@ async function downloadIcon(iconUrl: string): Promise<PageIcon | undefined> {
   }
 
   const data = Buffer.from(response.data);
-  const fileDetails = await fileType.fromBuffer(data);
+  const fileDetails = await detectFileTypeFromBuffer(data);
   if (!fileDetails || !fileDetails.mime.startsWith('image/')) {
     return undefined;
   }

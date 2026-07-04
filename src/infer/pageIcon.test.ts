@@ -1,10 +1,10 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import * as fileType from 'file-type';
 
+import { detectFileTypeFromBuffer } from './fileType';
 import { pageIcon } from './pageIcon';
 
-jest.mock('file-type', () => ({
-  fromBuffer: jest.fn(),
+jest.mock('./fileType', () => ({
+  detectFileTypeFromBuffer: jest.fn(),
 }));
 
 function buildAxiosResponse<T>(data: T): AxiosResponse<T> {
@@ -23,7 +23,7 @@ test('it returns the preferred page icon extension', async () => {
   const icoBuffer = Buffer.alloc(10, 2);
   const ignoredBuffer = Buffer.alloc(5, 3);
   const axiosGetMock = jest.spyOn(axios, 'get');
-  const fileTypeFromBufferMock = fileType.fromBuffer as jest.Mock;
+  const detectFileTypeFromBufferMock = detectFileTypeFromBuffer as jest.Mock;
 
   axiosGetMock.mockImplementation((url) => {
     if (url === 'https://example.com/path/page') {
@@ -46,18 +46,18 @@ test('it returns the preferred page icon extension', async () => {
     return Promise.resolve(buildAxiosResponse(ignoredBuffer));
   });
 
-  fileTypeFromBufferMock.mockImplementation((data) => {
+  detectFileTypeFromBufferMock.mockImplementation((data) => {
     if (Buffer.from(data).length === pngBuffer.length) {
       return Promise.resolve({
         ext: 'png',
         mime: 'image/png',
-      } as fileType.FileTypeResult);
+      });
     }
     if (Buffer.from(data).length === icoBuffer.length) {
       return Promise.resolve({
         ext: 'ico',
         mime: 'image/x-icon',
-      } as fileType.FileTypeResult);
+      });
     }
     return Promise.resolve(undefined);
   });
