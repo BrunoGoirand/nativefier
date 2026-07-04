@@ -74,57 +74,6 @@ npm run bump:major|minor|patch
 
 ## Upgrades
 
-**Mises à jour**
-
-| Module | Scope | Avant | Maintenant | Type de changement |
-|---|---|---:|---:|---|
-| `electron` | root/app dev | `^25.7.0` | `^43.0.0` | Très grosse montée, +18 majeures |
-| `@types/node` | root dev | `^20.5.6` | `^26.1.0` | +6 majeures |
-| `eslint` | root dev | `^8.46.0` | `^10.6.0` | +2 majeures |
-| `@typescript-eslint/eslint-plugin` | root dev | `^6.4.1` | `^8.62.1` | +2 majeures |
-| `@typescript-eslint/parser` | root dev | `^6.4.1` | `^8.62.1` | +2 majeures |
-| `webpack-cli` | root dev | `^5.1.4` | `^7.1.0` | +2 majeures |
-| `typescript` | root dev | `^5.1.6` | `^6.0.3` | +1 majeure |
-| `jest` | root dev | `^29.6.2` | `^30.4.2` | +1 majeure |
-| `@types/jest` | root dev | `^29.5.4` | `^30.0.0` | +1 majeure |
-| `@electron/asar` | root prod | `^3.2.4` | `^4.2.0` | +1 majeure |
-| `yargs` | root prod | `^17.7.2` | `^18.0.0` | +1 majeure |
-| `rimraf` | root dev | `^5.0.1` | `^6.1.3` | +1 majeure |
-| `electron-context-menu` | app prod | `^3.6.1` | `^4.1.2` | +1 majeure |
-| `electron-dl` | app prod | `^3.5.0` | `^4.0.0` | +1 majeure |
-| `playwright` | root dev | `^1.36.2` | `^1.61.1` | Grosse mise à jour mineure |
-| `webpack` | root dev | `^5.88.2` | `^5.108.3` | Mise à jour mineure |
-| `prettier` | root dev | `^3.0.1` | `^3.9.4` | Mise à jour mineure |
-| `fs-extra` | root prod | `^11.1.1` | `^11.3.6` | Mise à jour mineure |
-| `axios` | root prod | `^1.4.0` | `^1.18.1` | Mise à jour mineure |
-| `tmp` | root prod | `^0.2.1` | `^0.2.7` | Mise à jour patch/minor |
-| `sanitize-filename` | root prod | `^1.6.3` | `^1.6.4` | Patch |
-| `loglevel` | root/app prod | `^1.8.1` | `^1.8.1` déclaré, installé `1.9.2` | Lock/install mis à jour |
-| `electron-squirrel-startup` | app prod | `^1.0.0` | `^1.0.0`, installé `1.0.1` | Patch installé |
-
-**Ajouts**
-| Module | Scope | Version actuelle | Rôle probable |
-|---|---|---:|---|
-| `cheerio` | root prod | `^1.0.0-rc.12` | Parsing HTML |
-| `file-type` | root prod | `^16.5.4` | Détection type fichier, reste à mettre à jour |
-| `which` | root prod | `^4.0.0` | Remplacement probable de `hasbin` |
-| `@eslint/js` | root dev | `^10.0.1` | Nouvelle stack ESLint flat/config moderne |
-| `@types/which` | root dev | `^3.0.4` | Types pour `which` |
-
-**Suppressions / Remplacements**
-| Module supprimé | Avant | Remplacement apparent |
-|---|---:|---|
-| `gitcloud` | `^0.2.4` | Supprimé |
-| `hasbin` | `^1.2.3` | Remplacé par `which` |
-| `ncp` | `^2.0.0` | Remplacé par script Node `dev/copy-app-static.js` |
-| `page-icon` | `^0.4.0` | Supprimé |
-| `source-map-support` | root/app `^0.5.21` | Supprimé |
-| `@types/hasbin` | `^1.2.0` | Supprimé |
-| `@types/ncp` | `^2.0.5` | Supprimé |
-| `@types/page-icon` | `^0.3.4` | Supprimé |
-
----
-
 Bilan refait au **4 juillet 2026** via `npm outdated` + dates de publication npm. Le retard versionnel restant est maintenant très limité : **3 dépendances seulement** sont encore derrière la dernière version.
 
 **Retard À Prioriser**

@@ -67,3 +67,7 @@ darwin-*-template-*
 
 tsconfig.tsbuildinfo
 scripts
+
+# Misc
+
+HOWTO.md
