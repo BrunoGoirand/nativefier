@@ -189,7 +189,7 @@ Notes:
 
 - When packaging for Windows, must be a path to a `.ico` file.
 - When packaging for Linux, must be a path to a `.png` file.
-- When packaging for macOS, must be a `.icns` or a `.png` file if the [optional dependencies](../README.md#optional-dependencies) are installed.
+- When packaging for macOS, must be a `.icns` or a `.png` file if the [optional dependencies](UPSTREAM.md#optional-dependencies) are installed.
   If your `PATH` has our image-conversion dependencies (`iconutil`, and either ImageMagick `convert` + `identify`, or GraphicsMagick `gm`), Nativefier will automatically convert the `.png` to a `.icns` for you.
 
 Alternative to macOS users: [iConvertIcons](https://iconverticons.com/online/) can be used to convert `.pngs`, though it can be quite cumbersome.
@@ -366,7 +366,12 @@ nativefier <your-website> --browserwindow-options '{ "webPreferences": { "defaul
 --disable-context-menu
 ```
 
-Disable the context menu
+Disable Nativefier's built-in right-click context menu.
+
+By default, Nativefier adds a context menu with common actions such as copying
+text or images, saving images, and opening, copying, or re-opening links in the
+default browser, a new app window, or a native tab where supported. Passing this
+option prevents that menu from being registered.
 
 #### [disable-dev-tools]
 

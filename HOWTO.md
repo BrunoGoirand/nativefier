@@ -53,6 +53,8 @@ node lib/cli.js --name "ChatGPT" --single-instance --maximize --icon icons/ChatG
 #
 node lib/cli.js --name "TorrentQuest" --single-instance --icon icons/TorrentQuest-270x270.png 'https://torrentquest.com'
 node lib/cli.js --name "TorrentQuest" 'https://torrentquest.com'
+#
+node lib/cli.js --name "TorrentQuest" --single-instance --disable-context-menu --icon icons/TorrentQuest-270x270.png 'https://torrentquest.com'
 ```
 
 ## Run

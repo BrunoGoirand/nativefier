@@ -1,0 +1,42 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Nativefier logo</title>
+  <desc id="desc">A stylized desktop app window wrapping a web globe, with a spark suggesting transformation into a native app.</desc>
+  <defs>
+    <linearGradient id="bg" x1="72" y1="56" x2="440" y2="456" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#24C6DC"/>
+      <stop offset="0.52" stop-color="#4966F5"/>
+      <stop offset="1" stop-color="#7D4CDB"/>
+    </linearGradient>
+    <linearGradient id="window" x1="132" y1="126" x2="384" y2="386" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DDE7FF"/>
+    </linearGradient>
+    <linearGradient id="spark" x1="332" y1="92" x2="428" y2="188" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE66D"/>
+      <stop offset="1" stop-color="#FF8A3D"/>
+    </linearGradient>
+    <filter id="shadow" x="64" y="78" width="384" height="384" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#15203A" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <rect x="32" y="32" width="448" height="448" rx="104" fill="url(#bg)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="112" y="132" width="288" height="252" rx="34" fill="url(#window)"/>
+    <path d="M112 166C112 147.222 127.222 132 146 132H366C384.778 132 400 147.222 400 166V196H112V166Z" fill="#15203A"/>
+    <circle cx="150" cy="164" r="9" fill="#FF6B6B"/>
+    <circle cx="180" cy="164" r="9" fill="#FFD166"/>
+    <circle cx="210" cy="164" r="9" fill="#06D6A0"/>
+  </g>
+
+  <g stroke="#15203A" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="256" cy="284" r="72" fill="#F7FAFF"/>
+    <path d="M184 284H328"/>
+    <path d="M256 212C278 236 290 260 290 284C290 308 278 332 256 356"/>
+    <path d="M256 212C234 236 222 260 222 284C222 308 234 332 256 356"/>
+  </g>
+
+  <path d="M378 88L394.6 130.4L437 147L394.6 163.6L378 206L361.4 163.6L319 147L361.4 130.4L378 88Z" fill="url(#spark)" stroke="#15203A" stroke-width="14" stroke-linejoin="round"/>
+  <path d="M132 374H380" stroke="#15203A" stroke-width="18" stroke-linecap="round"/>
+</svg>
