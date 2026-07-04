@@ -1,6 +1,6 @@
 {
   "name": "nativefier",
-  "version": "53.3.5",
+  "version": "53.3.6",
   "description": "Wrap web apps natively",
   "license": "MIT",
   "author": "Goh Jia Hao",
@@ -71,7 +71,7 @@
     "loglevel": "^1.8.1",
     "sanitize-filename": "^1.6.3",
     "tmp": "^0.2.1",
-    "which": "^4.0.0",
+    "which": "^6.0.1",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
