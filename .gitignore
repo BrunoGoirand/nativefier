@@ -69,4 +69,5 @@ tsconfig.tsbuildinfo
 scripts
 
 # Misc
+AGENTS.md
 HOWTO.md
