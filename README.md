@@ -4,6 +4,13 @@
   <img src=".github/nativefier-logo.svg" alt="Nativefier logo" width="160">
 </p>
 
+<div id="badges" align="center">
+
+[![current version](https://img.shields.io/github/package-json/v/BrunoGoirand/nativefier.svg)](https://github.com/BrunoGoirand/nativefier/blob/master/package.json)
+[![license](https://img.shields.io/github/license/BrunoGoirand/nativefier.svg)](https://github.com/BrunoGoirand/nativefier/blob/master/LICENSE.md)
+
+</div>
+
 This repository is a fork of
 [nativefier/nativefier](https://github.com/nativefier/nativefier).
 
